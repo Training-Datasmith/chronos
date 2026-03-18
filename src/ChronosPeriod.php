@@ -67,41 +67,26 @@ class ChronosPeriod implements Iterator
             && (int)($interval->f * 1_000_000) === 0;
     }
 
-    /**
-     * @return \Cake\Chronos\Chronos
-     */
     public function current(): Chronos
     {
         return new Chronos($this->iterator->current());
     }
 
-    /**
-     * @return int
-     */
     public function key(): int
     {
         return $this->iterator->key();
     }
 
-    /**
-     * @return void
-     */
     public function next(): void
     {
         $this->iterator->next();
     }
 
-    /**
-     * @return void
-     */
     public function rewind(): void
     {
         $this->iterator->rewind();
     }
 
-    /**
-     * @return bool
-     */
     public function valid(): bool
     {
         return $this->iterator->valid();

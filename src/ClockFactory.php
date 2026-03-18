@@ -23,16 +23,13 @@ use Psr\Clock\ClockInterface;
  */
 class ClockFactory implements ClockInterface
 {
-    private DateTimeZone|string|null $timezone;
-
     /**
      * Constructor.
      *
      * @param \DateTimeZone|string|null $timezone The timezone
      */
-    public function __construct(DateTimeZone|string|null $timezone = null)
+    public function __construct(private readonly DateTimeZone|string|null $timezone = null)
     {
-        $this->timezone = $timezone;
     }
 
     /**
