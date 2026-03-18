@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -12,6 +13,7 @@ declare(strict_types=1);
  * @link          https://cakephp.org CakePHP(tm) Project
  * @license       https://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace Cake\Chronos;
 
 use DateInterval;
@@ -2137,7 +2139,7 @@ class Chronos extends DateTimeImmutable implements Stringable
         }
 
         $period = new DatePeriod($start, $interval, $end, $options);
-        $vals = array_filter(iterator_to_array($period), fn(DateTimeInterface $date) => $callback(static::instance($date)));
+        $vals = array_filter(iterator_to_array($period), fn (DateTimeInterface $date) => $callback(static::instance($date)));
 
         $diff = count($vals);
 
@@ -2260,7 +2262,7 @@ class Chronos extends DateTimeImmutable implements Stringable
      */
     public function diffInWeekdays(?DateTimeInterface $other = null, bool $absolute = true, int $options = 0): int
     {
-        return $this->diffInDaysFiltered(fn(Chronos $date) => $date->isWeekday(), $other, $absolute, $options);
+        return $this->diffInDaysFiltered(fn (Chronos $date) => $date->isWeekday(), $other, $absolute, $options);
     }
 
     /**
@@ -2272,7 +2274,7 @@ class Chronos extends DateTimeImmutable implements Stringable
      */
     public function diffInWeekendDays(?DateTimeInterface $other = null, bool $absolute = true, int $options = 0): int
     {
-        return $this->diffInDaysFiltered(fn(Chronos $date) => $date->isWeekend(), $other, $absolute, $options);
+        return $this->diffInDaysFiltered(fn (Chronos $date) => $date->isWeekend(), $other, $absolute, $options);
     }
 
     /**

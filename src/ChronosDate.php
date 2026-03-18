@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -1325,7 +1326,7 @@ class ChronosDate implements Stringable
         $endTime = $end->native->modify('+1 second');
 
         $period = new DatePeriod($start->native, $interval, $endTime, $options);
-        $vals = array_filter(iterator_to_array($period), fn(DateTimeInterface $date) => $callback(static::parse($date)));
+        $vals = array_filter(iterator_to_array($period), fn (DateTimeInterface $date) => $callback(static::parse($date)));
 
         $diff = count($vals);
 
@@ -1409,7 +1410,7 @@ class ChronosDate implements Stringable
      */
     public function diffInWeekdays(?ChronosDate $other = null, bool $absolute = true, int $options = 0): int
     {
-        return $this->diffInDaysFiltered(fn(ChronosDate $date) => $date->isWeekday(), $other, $absolute, $options);
+        return $this->diffInDaysFiltered(fn (ChronosDate $date) => $date->isWeekday(), $other, $absolute, $options);
     }
 
     /**
@@ -1421,7 +1422,7 @@ class ChronosDate implements Stringable
      */
     public function diffInWeekendDays(?ChronosDate $other = null, bool $absolute = true, int $options = 0): int
     {
-        return $this->diffInDaysFiltered(fn(ChronosDate $date) => $date->isWeekend(), $other, $absolute, $options);
+        return $this->diffInDaysFiltered(fn (ChronosDate $date) => $date->isWeekend(), $other, $absolute, $options);
     }
 
     /**
