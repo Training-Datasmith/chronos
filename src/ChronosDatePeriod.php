@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
@@ -12,14 +11,12 @@ declare(strict_types=1);
  * @link          https://cakephp.org CakePHP(tm) Project
  * @license       https://www.opensource.org/licenses/mit-license.php MIT License
  */
-
 namespace Cake\Chronos;
 
 use DateInterval;
 use DatePeriod;
 use InvalidArgumentException;
 use Iterator;
-
 /**
  * DatePeriod wrapper that returns Chronos instances.
  *
@@ -27,67 +24,51 @@ use Iterator;
  * @template TValue \Cake\Chronos\ChronosDate
  * @template-implements \Iterator<int, \Cake\Chronos\ChronosDate>
  */
-class ChronosDatePeriod implements Iterator
+class Chronos_Date_Period implements Iterator
 {
     /**
      * @var \Iterator<int, \DateTimeInterface>
      */
     protected Iterator $iterator;
-
     /**
      * @param \DatePeriod $period The DatePeriod to wrap.
      * @throws \InvalidArgumentException If the period has a zero interval which would cause an infinite loop.
      */
     public function __construct(DatePeriod $period)
     {
-        if (static::isZeroInterval($period->getDateInterval())) {
-            throw new InvalidArgumentException(
-                'Cannot create a period with a zero interval. This would cause an infinite loop when iterating.',
-            );
+        if (static::is_zero_interval($period->get_date_interval())) {
+            throw new InvalidArgumentException('Cannot create a period with a zero interval. This would cause an infinite loop when iterating.');
         }
-
         /** @var \Iterator<int, \DateTimeInterface> $iterator */
         $iterator = $period->getIterator();
         $this->iterator = $iterator;
     }
-
     /**
      * Check if a DateInterval is effectively zero.
      *
      * @param \DateInterval $interval The interval to check.
      * @return bool True if the interval is zero.
      */
-    protected static function isZeroInterval(DateInterval $interval): bool
+    protected static function is_zero_interval(DateInterval $interval): bool
     {
-        return $interval->y === 0
-            && $interval->m === 0
-            && $interval->d === 0
-            && $interval->h === 0
-            && $interval->i === 0
-            && $interval->s === 0
-            && (int)($interval->f * 1_000_000) === 0;
+        return $interval->y === 0 && $interval->m === 0 && $interval->d === 0 && $interval->h === 0 && $interval->i === 0 && $interval->s === 0 && (int) ($interval->f * 1000000) === 0;
     }
-
-    public function current(): ChronosDate
+    public function current(): Chronos_Date
     {
-        return new ChronosDate($this->iterator->current());
+        return new Chronos_Date($this->iterator->current());
     }
-
     public function key(): int
     {
         return $this->iterator->key();
     }
-
     public function next(): void
     {
         $this->iterator->next();
     }
-
     public function rewind(): void
     {
         $this->iterator->rewind();
     }
-
     public function valid(): bool
     {
         return $this->iterator->valid();

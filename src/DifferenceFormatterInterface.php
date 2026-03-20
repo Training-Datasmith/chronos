@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
@@ -12,15 +11,13 @@ declare(strict_types=1);
  * @link          https://cakephp.org CakePHP(tm) Project
  * @license       https://www.opensource.org/licenses/mit-license.php MIT License
  */
-
 namespace Cake\Chronos;
 
 use DateTimeInterface;
-
 /**
  * Interface for formatting differences in text.
  */
-interface DifferenceFormatterInterface
+interface Difference_Formatter_Interface
 {
     /**
      * Get the difference in a human readable format.
@@ -30,9 +27,5 @@ interface DifferenceFormatterInterface
      * @param bool $absolute removes time difference modifiers ago, after, etc
      * @return string The difference between the two days in a human readable format
      */
-    public function diffForHumans(
-        ChronosDate|DateTimeInterface $first,
-        ChronosDate|DateTimeInterface|null $second = null,
-        bool $absolute = false,
-    ): string;
+    public function diff_for_humans(Chronos_Date|DateTimeInterface $first, Chronos_Date|DateTimeInterface|null $second = null, bool $absolute = false): string;
 }

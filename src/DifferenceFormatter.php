@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 /**
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
@@ -13,11 +12,9 @@ declare(strict_types=1);
  * @link          https://cakephp.org CakePHP(tm) Project
  * @license       https://www.opensource.org/licenses/mit-license.php MIT License
  */
-
 namespace Cake\Chronos;
 
 use DateTimeInterface;
-
 /**
  * Handles formatting differences in text.
  *
@@ -26,13 +23,12 @@ use DateTimeInterface;
  *
  * @internal
  */
-class DifferenceFormatter implements DifferenceFormatterInterface
+class Difference_Formatter implements Difference_Formatter_Interface
 {
     /**
      * The text translator object
      */
     protected Translator $translate;
-
     /**
      * Constructor.
      *
@@ -42,57 +38,48 @@ class DifferenceFormatter implements DifferenceFormatterInterface
     {
         $this->translate = $translate ?: new Translator();
     }
-
     /**
      * @inheritDoc
      */
-    public function diffForHumans(
-        ChronosDate|DateTimeInterface $first,
-        ChronosDate|DateTimeInterface|null $second = null,
-        bool $absolute = false,
-    ): string {
-        $isNow = $second === null;
+    public function diff_for_humans(Chronos_Date|DateTimeInterface $first, Chronos_Date|DateTimeInterface|null $second = null, bool $absolute = false): string
+    {
+        $is_now = $second === null;
         if ($second === null) {
-            if ($first instanceof ChronosDate) {
-                $second = new ChronosDate(Chronos::now());
+            if ($first instanceof Chronos_Date) {
+                $second = new Chronos_Date(Chronos::now());
             } else {
-                $second = Chronos::now($first->getTimezone());
+                $second = Chronos::now($first->get_timezone());
             }
         }
-        assert(
-            ($first instanceof ChronosDate && $second instanceof ChronosDate) ||
-            ($first instanceof DateTimeInterface && $second instanceof DateTimeInterface),
-        );
-
-        $diffInterval = $first->diff($second);
-
+        assert($first instanceof Chronos_Date && $second instanceof Chronos_Date || $first instanceof DateTimeInterface && $second instanceof DateTimeInterface);
+        $diff_interval = $first->diff($second);
         switch (true) {
-            case $diffInterval->y > 0:
+            case $diff_interval->y > 0:
                 $unit = 'year';
-                $count = $diffInterval->y;
+                $count = $diff_interval->y;
                 break;
-            case $diffInterval->m >= 2:
+            case $diff_interval->m >= 2:
                 $unit = 'month';
-                $count = $diffInterval->m;
+                $count = $diff_interval->m;
                 break;
-            case $diffInterval->days >= Chronos::DAYS_PER_WEEK * 3:
+            case $diff_interval->days >= Chronos::DAYS_PER_WEEK * 3:
                 $unit = 'week';
-                $count = (int)($diffInterval->days / Chronos::DAYS_PER_WEEK);
+                $count = (int) ($diff_interval->days / Chronos::DAYS_PER_WEEK);
                 break;
-            case $diffInterval->d > 0:
+            case $diff_interval->d > 0:
                 $unit = 'day';
-                $count = $diffInterval->d;
+                $count = $diff_interval->d;
                 break;
-            case $diffInterval->h > 0:
+            case $diff_interval->h > 0:
                 $unit = 'hour';
-                $count = $diffInterval->h;
+                $count = $diff_interval->h;
                 break;
-            case $diffInterval->i > 0:
+            case $diff_interval->i > 0:
                 $unit = 'minute';
-                $count = $diffInterval->i;
+                $count = $diff_interval->i;
                 break;
             default:
-                $count = $diffInterval->s;
+                $count = $diff_interval->s;
                 $unit = 'second';
                 break;
         }
@@ -100,15 +87,13 @@ class DifferenceFormatter implements DifferenceFormatterInterface
         if ($absolute) {
             return $time;
         }
-        $isFuture = $diffInterval->invert === 1;
-        $transId = $isNow ? ($isFuture ? 'from_now' : 'ago') : ($isFuture ? 'after' : 'before');
-
+        $is_future = $diff_interval->invert === 1;
+        $trans_id = $is_now ? $is_future ? 'from_now' : 'ago' : ($is_future ? 'after' : 'before');
         // Some langs have special pluralization for past and future tense.
-        $tryKeyExists = $unit . '_' . $transId;
-        if ($this->translate->exists($tryKeyExists)) {
-            $time = $this->translate->plural($tryKeyExists, $count, ['count' => $count]);
+        $try_key_exists = $unit . '_' . $trans_id;
+        if ($this->translate->exists($try_key_exists)) {
+            $time = $this->translate->plural($try_key_exists, $count, ['count' => $count]);
         }
-
-        return $this->translate->singular($transId, ['time' => $time]);
+        return $this->translate->singular($trans_id, ['time' => $time]);
     }
 }
