@@ -4,7 +4,9 @@
          bootstrap="tests/bootstrap.php"
          colors="true"
          failOnDeprecation="true"
-         displayDetailsOnTestsThatTriggerDeprecations="true">
+         failOnWarning="true"
+         displayDetailsOnTestsThatTriggerDeprecations="true"
+         displayDetailsOnTestsThatTriggerWarnings="true">
     <testsuites>
         <testsuite name="Chronos Test Suite">
             <directory>tests</directory>

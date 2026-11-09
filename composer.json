@@ -50,6 +50,11 @@
             "dealerdirect/phpcodesniffer-composer-installer": true
         }
     },
+    "extra": {
+        "branch-alias": {
+            "dev-remote-test-2026-11-09": "3.5.x-dev"
+        }
+    },
     "scripts": {
         "check": [
             "@test",

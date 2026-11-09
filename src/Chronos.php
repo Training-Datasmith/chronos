@@ -739,9 +739,17 @@ class Chronos extends DateTimeImmutable implements Stringable
      * @param float|int $timestamp The timestamp to create an instance from.
      * @param \DateTimeZone|string|null $timezone The DateTimeZone object or timezone name the new instance should use.
      * @return static
+     * @throws \InvalidArgumentException
      */
     public static function createFromTimestamp(float|int $timestamp, DateTimeZone|string|null $timezone = null): static
     {
+        if (is_float($timestamp) && !is_finite($timestamp)) {
+            throw new InvalidArgumentException(sprintf(
+                'Timestamp must be a finite number, `%s` given.',
+                $timestamp,
+            ));
+        }
+
         $instance = PHP_VERSION_ID >= 80400 ? parent::createFromTimestamp($timestamp) : new static('@' . $timestamp);
 
         return $timezone ? $instance->setTimezone($timezone) : $instance;
