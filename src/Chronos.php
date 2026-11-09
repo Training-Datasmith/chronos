@@ -244,6 +244,12 @@ class Chronos extends DateTimeImmutable implements Stringable
             return;
         }
 
+        if (is_string($time) && static::isAbsoluteUnixTimestamp($time)) {
+            parent::__construct($time);
+
+            return;
+        }
+
         if ($timezone !== null) {
             $timezone = $timezone instanceof DateTimeZone ? $timezone : new DateTimeZone($timezone);
         }
@@ -352,6 +358,10 @@ class Chronos extends DateTimeImmutable implements Stringable
      */
     public static function hasRelativeKeywords(?string $time): bool
     {
+        if (is_string($time) && static::isAbsoluteUnixTimestamp($time)) {
+            return false;
+        }
+
         if (self::isTimeExpression($time)) {
             return true;
         }
@@ -361,6 +371,26 @@ class Chronos extends DateTimeImmutable implements Stringable
         }
 
         return false;
+    }
+
+    /**
+     * Whether a string is a finite Unix timestamp in `@seconds` form.
+     *
+     * @param string $time The time string to check.
+     * @return bool
+     */
+    private static function isAbsoluteUnixTimestamp(string $time): bool
+    {
+        if ($time === '' || $time[0] !== '@') {
+            return false;
+        }
+
+        $remainder = substr($time, 1);
+        if ($remainder === '' || !is_numeric($remainder)) {
+            return false;
+        }
+
+        return is_finite((float)$remainder);
     }
 
     /**

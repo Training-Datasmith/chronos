@@ -135,6 +135,9 @@ class CreateFromTimestampTest extends TestCase
 
         $this->assertSame('1969-12-31 23:59:58.500000', $d->format('Y-m-d H:i:s.u'));
         $this->assertSame(500000, $d->microsecond);
+        $this->assertSame('+00:00', $d->tzName);
+        $this->assertSame(0, $d->offset);
+        $this->assertSame(-2, $d->getTimestamp());
     }
 
     public function testCreateFromTimestampAcceptsNegativeIntegerWithTestNow(): void
@@ -144,6 +147,31 @@ class CreateFromTimestampTest extends TestCase
 
         $this->assertSame('1969-12-31 23:43:20.000000', $d->format('Y-m-d H:i:s.u'));
         $this->assertSame(0, $d->microsecond);
+        $this->assertSame('+00:00', $d->tzName);
+        $this->assertSame(0, $d->offset);
+        $this->assertSame(-1000, $d->getTimestamp());
+    }
+
+    public function testCreateFromTimestampAbsoluteNegativeWithUtcAndTestNow(): void
+    {
+        Chronos::setTestNow(Chronos::create(2024, 7, 1, 14, 30, 0, 0, 'UTC'));
+        $d = Chronos::createFromTimestamp(-1.5, 'UTC');
+
+        $this->assertSame('1969-12-31 23:59:58.500000', $d->format('Y-m-d H:i:s.u'));
+        $this->assertSame('UTC', $d->tzName);
+        $this->assertSame(0, $d->offset);
+        $this->assertSame(-2, $d->getTimestamp());
+    }
+
+    public function testRelativeStringsStillHonorTestNow(): void
+    {
+        Chronos::setTestNow(Chronos::create(2024, 7, 1, 14, 30, 0, 0, 'UTC'));
+
+        $plusTwoDays = Chronos::parse('+2 days', 'UTC');
+        $this->assertSame('2024-07-03 14:30:00', $plusTwoDays->format('Y-m-d H:i:s'));
+
+        $minusOneHour = Chronos::parse('-1 hour', 'UTC');
+        $this->assertSame('2024-07-01 13:30:00', $minusOneHour->format('Y-m-d H:i:s'));
     }
 
     public function testCreateFromTimestampAcceptsNegativeFractionWithoutTestNow(): void
